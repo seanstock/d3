@@ -1,0 +1,809 @@
+// Call function, transform CSV to JSON
+var dash_data = genJSON(atreeData, ['years', 'topic', 'subtopic']);
+dash_data.name = "Dashboards";
+dash_data.message = "Click to Expand Viewer";
+for (var i = 0, len = dash_data.children.length; i < len; i++) {
+    yrs = dash_data.children[i]; // 0 = QBO
+    //console.log("Group: " + yrs.name);
+    console.log(yrs);
+    for (var n = 0, lena = yrs.children.length; n < lena; n++) {
+        topics = yrs.children[n]; // 0 = '', 1 = Atr & Rev
+        console.log("$$$$$$$$$$$$$$$$$$$$$$$$");
+        console.log("topics: " + topics.name);
+        console.log(lena);
+        console.log(n);
+        for (var k = 0, lenb = topics.children.length; k < lenb; k++) {
+            subtopics = topics.children[k];
+            //console.log("subtopics: " + subtopics.name);
+            for (var l = 0, lenc = subtopics.children.length; l < lenc; l++) {
+                titles = subtopics.children[l];
+                //console.log(" ");
+                //console.log("titles: " + titles.name);
+                //console.log(yrs.name);
+                //console.log(topics.name);
+                if (subtopics.children[k].years == "" && subtopics.children[k].subtopic == "" && subtopics.children[k].topic == "") {
+                    dash_data.children.unshift(titles);
+                    len++;
+                    //console.log('1');
+                } else if (subtopics.children[k].subtopic == "" && subtopics.children[k].topic == "") {
+                    yrs.children.unshift(titles);
+                    //console.log('2');i
+                    lena++;
+                } else if (subtopics.children[k].subtopic == "") {
+                    console.log('else ifffff');
+                    topics.children.unshift(titles);
+                    //lenb++;
+                }
+            }
+        }
+        topics.children = topics.children.filter(function(obj) {
+            return obj.name != '';
+        });
+    }
+    yrs.children = yrs.children.filter(function(obj) {
+        return obj.name != '';
+    });
+
+}
+
+
+<
+!DOCTYPE html >
+
+    <
+    meta charset = "utf-8" >
+    <
+    title > Dashboards < /title> <
+    style >
+    a: link {
+        text - decoration: none;
+        color: white;
+    }
+a: visited {
+    color: white;
+}
+a: hover {
+    color: deepskyblue;
+}#
+viewer {
+    z - index: 50;
+    float: left;
+    left: 0 px;
+    width: 100 % ;
+    height: 100 % ;
+    margin - top: 32 px;
+    background - color: red;
+}#
+myframe {
+    background: #fff;
+    float: right;
+    margin - right: 23 px;
+    height: 98 % ;
+    width: 81 % ;
+    margin - top: 12 px;
+}#
+svg_div {
+    position: absolute;
+    z - index: 60;
+    float: left;
+    left: -15 px;
+    width: 1 % ;
+    height: 1 % ;
+    margin - top: -39 px;
+}
+html,
+body {;
+    z - index: -999999;
+    font - family: 'Lato', sans - serif;
+    color: white;
+    background - color: #fff;
+    font - size: 16 px;
+    font - weight: 500;
+    line - height: 2.4;
+    height: 100 % ;
+    /*overflow:hidden;*/
+}
+.access {
+    z - index = -9999999;
+    position: absolute;
+    bottom: 1 % ;
+    font - weight: 700;
+    font - size: 12 px;
+    right: 5 px;
+    width: 20 % ;
+    height: 15 px;
+}
+.head - div {
+        /* setting pointer events to none will enable expansion, disable link back to homepage*/
+        pointer - events: none;
+        padding: 10 px;
+        line - height: 1.3;
+        z - index: 999;
+        font - family: 'Open Sans';
+        position: absolute;
+        background: #444;
+border-width: 0px 0px 0px 0px;
+border-style: solid;
+border-color: # ffffff# ffffff# ddd# ffffff;
+        border - radius: 0 px;
+        width: 214 px;
+        height: 56 px;
+        top: 0 px;
+        left: 0 px;
+    }
+    .expand {
+        line - height: 1.5;
+        margin - top: 5 px;
+        margin - left: 5 px;
+        pointer - events: none;
+        font - size: 10 px;
+        color: #7fd000;
+background: # 444;
+    }
+
+    .node rect {
+        z - index: 100000;
+        fill: #fff;
+        stroke: #ddd;
+        border: 0 px solid black;
+        border - radius: 2 px;
+        /*stroke-dasharray:233,1500;*/
+    }
+    .node text {
+        font: 10 px sans - serif;
+        font - weight: 300;
+        pointer - events: none;
+    }
+path.link {
+    fill: none;
+    stroke: #aaa;
+    stroke - width: 0 px;
+}
+div.tooltip {
+    position: absolute;
+    text - align: center;
+    top: 30 px;
+    left: 338 px;
+    width: 300 px;
+    height: 150 px;
+    padding: 2 px;
+    font: 12 px sans - serif;
+    background: white;
+    border: 3 px solid steelblue;
+    border - radius: 4 px;
+    pointer - events: none;
+}#
+author_div {
+    background: white;
+    position: absolute;
+    bottom: 7 px;
+    left: 7 px;
+}#
+sidebar {
+    width: 270 px;
+    float: right;
+}#
+scroller {
+    width: 270 px;
+} <
+/style>
+
+<
+head >
+    <
+    link href = "https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
+rel = "stylesheet" >
+    <
+    link rel = "stylesheet"
+type = "text/css"
+href = "https://fonts.googleapis.com/css?family=Open+Sans" >
+    <
+    script type = "text/javascript"
+src = "https://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" > < /script> <
+    script type = "text/javascript"
+src = "http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js" > < /script> <
+    script type = 'text/javascript'
+src = 'https://tableau.intuit.net/javascripts/api/viz_v1.js' >
+    <
+    /script> <
+    /head>
+
+    <
+    body >
+
+    <
+    div id = "access"
+class = "access" >
+    <
+    center > < a style = "color:#aaffff; text-decoration: underline;"
+href = "https://wiki.intuit.com/display/SBFS/Tableau+Server+Access" > Access Errors ? Request Tableau Access! < /a></center >
+    <
+    /div>
+
+    <!--Main Div for Iframe. The Koala Circles are controlled by src-->
+    <
+    div class = "svg_div"
+id = "svg_div" > < /div> <
+    iframe frameborder = "0"
+class = "myframe"
+id = "myframe"
+name = "myframe"
+src = "https://tableau.intuit.net/#/views/KPI/SBGWWPerformanceMetrics?:embed=y&:showShareOptions=true&:display_count=no"
+width = 100 % height = 682 px > < /iframe>
+
+    <
+    div id = "head-div"
+class = "head-div" >
+    <
+    a href = "http://sbganalytics.corp.intuit.net/" > & nbsp;
+SBG Data Analytics < br > & nbsp; & Science Dashboards < br > < div id = "expand"
+class = "expand" > Click to Expand Viewer < /div></a > < /center> <
+    /div>
+
+
+    <
+    script type = "text/javascript" >
+    var cat;
+var subcat;
+var url;
+
+function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+        function(m, key, value) {
+            vars[key] = value;
+        });
+    return vars;
+}
+
+var fType = getUrlVars()["url"];
+console.log(fType);
+
+var cat = getUrlVars()["cat"];
+console.log(cat);
+
+var scat = getUrlVars()["subcat"];
+console.log(scat);
+
+if (fType == undefined) {
+    document.getElementById("myframe").src = 'http://www.koalastothemax.com';
+    console.log('Undefined yo!');
+} else {
+    console.log(fType);
+    document.getElementById("myframe").src = fType;
+}
+
+
+
+var startProductBarPos = -1;
+window.onscroll = function() {
+    var bar = document.getElementById('productMenuBar');
+    if (startProductBarPos < 0) startProductBarPos = findPosY(bar);
+
+    if (pageYOffset > startProductBarPos) {
+        bar.style.position = 'fixed';
+        bar.style.top = 0;
+    } else {
+        bar.style.position = 'relative';
+    }
+
+};
+
+
+function findPosY(obj) {
+    var curtop = 0;
+    if (typeof(obj.offsetParent) != 'undefined' && obj.offsetParent) {
+        while (obj.offsetParent) {
+            curtop += obj.offsetTop;
+            obj = obj.offsetParent;
+        }
+        curtop += obj.offsetTop;
+    } else if (obj.y)
+        curtop += obj.y;
+    return curtop;
+} <
+/script>
+
+<
+script >
+    var initTopPosition = $('#myElementToStick').offset().top;
+$(window).scroll(function() {
+    if ($(window).scrollTop() > initTopPosition)
+        $('#myElementToStick').css({
+            'position': 'fixed',
+            'top': '0px'
+        });
+    else
+        $('#myElementToStick').css({
+            'position': 'absolute',
+            'top': initTopPosition + 'px'
+        });
+}); <
+/script>
+
+<
+script src = "//d3js.org/d3.v3.min.js" > < /script> <
+    script >
+    var margin = {
+            top: 58,
+            right: 20,
+            bottom: 30,
+            left: 15
+        },
+        width = 270 - margin.left - margin.right,
+        barHeight = 40,
+        barWidth = width;
+
+var i = 0,
+    duration = 400,
+    root,
+    nq = 0,
+    inset = 0;
+
+var tree = d3.layout.tree()
+    .nodeSize([100, inset]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) {
+        return [d.y, d.x];
+    });
+
+var svg = d3.select("#svg_div").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", "100%")
+    .attr("y", 160)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("rect")
+    .attr("width", "86.9%")
+    .attr("height", "100%")
+    .attr("y", 44)
+    .attr("fill", "#d4d7dc");
+
+svg.append("rect")
+    .attr("width", "86.9%")
+    .attr("height", "75px")
+    .attr("y", -28)
+    .attr("x", 0)
+    .attr("fill", "#444");
+
+function moveChildren(node) {
+    if (node.children) {
+        node.children.forEach(function(c) {
+            moveChildren(c);
+        });
+        if (node.name != 'Dashboards') {
+            node._children = node.children;
+            node.children = null;
+        }
+    }
+}
+// Get CSV data
+d3.csv("dashboards.csv", function(error, atreeData) {
+
+    _.each(atreeData, function(element, index, list) {
+        element.pop = +element.pop;
+    });
+
+    // Transforms CSV to JSON. CSV is Flat, this Viz is Nested
+    function genJSON(csvData, groups) {
+
+        var genGroups = function(atreeData) {
+            return _.map(atreeData, function(element, index) {
+                return {
+                    name: index,
+                    size: 0,
+                    children: element
+                };
+            });
+        };
+
+        var nest = function(node, curIndex) {
+            if (curIndex === 0) {
+                node.children = genGroups(_.groupBy(csvData, groups[0]));
+                _.each(node.children, function(child) {
+                    nest(child, curIndex + 1);
+                });
+            } else {
+                if (curIndex < groups.length) {
+                    node.children = genGroups(
+                        _.groupBy(node.children, groups[curIndex])
+                    );
+                    _.each(node.children, function(child) {
+                        nest(child, curIndex + 1);
+                    });
+                }
+            }
+            return node;
+        };
+        return nest({}, 0);
+    }
+    // Call function, transform CSV to JSON
+    var dash_data = genJSON(atreeData, ['topic', 'subtopic']);
+    dash_data.name = "Dashboards";
+    dash_data.message = "Click to Expand Viewer";
+    for (var i = 0, len = dash_data.children.length; i < len; i++) {
+        subcat = dash_data.children[i]; // 0 = QBO
+        for (var n = 0, lena = dash_data.children[i].children.length; n < lena; n++) {
+            subtopics = subcat.children[n]; // 0 = '', 1 = Atr & Rev
+            for (var k = 0, lenb = dash_data.children[i].children[n].children.length; k < lenb; k++) {
+                if (dash_data.children[i].children[n].children[k].subtopic == '') {
+                    dash_data.children[i].children.push(subtopics.children[k]);
+                }
+            }
+        }
+        console.log('i=' + i);
+        dash_data.children[i].children = dash_data.children[i].children.filter(function(obj) {
+            return obj.name != '';
+        });
+    }
+
+    dash_data.x0 = 0;
+    dash_data.y0 = 0;
+    moveChildren(dash_data);
+    update(root = dash_data);
+});
+
+var initTopPosition = $('#myElementToStick').offset().top;
+$(window).scroll(function() {
+    if ($(window).scrollTop() > initTopPosition)
+        $('#myElementToStick').css({
+            'position': 'fixed',
+            'top': '0px'
+        });
+    else
+        $('#myElementToStick').css({
+            'position': 'absolute',
+            'top': initTopPosition + 'px'
+        });
+});
+
+function update(source) {
+
+
+    // Compute the flattened node list. To do: use d3.layout.hierarchy.
+    var nodes = tree.nodes(root);
+
+
+    var height = 1600; //Math.max(1600, nodes.length * barHeight + margin.top + margin.bottom);
+
+    d3.select("svg").transition()
+        .duration(duration)
+        .attr("height", height);
+
+    d3.select(self.frameElement).transition()
+        .duration(duration)
+        .style("height", height + "px");
+
+    // Compute the "layout".
+    nodes.forEach(function(n, i) {
+        n.x = i * (barHeight);
+    });
+
+    // Update the nodes…
+    var node = svg.selectAll("g.node")
+        .data(nodes, function(d) {
+            return d.id || (d.id = ++i);
+        });
+
+    var nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function(d) {
+            return "translate(" + source.y0 + "," + source.x0 + ")";
+        })
+        .style("opacity", 1);
+
+    // Enter any new nodes at the parent's previous position.
+    nodeEnter.append("rect")
+        .attr("y", function(d) {
+            if (d.name == "Dashboards") {
+                return (-barHeight / 1.6);
+            } else {
+                return ((-barHeight / 1.6) + 34);
+            }
+        }) //(-barHeight / 1.6) + 25)
+        .attr("height", function(d) {
+            if (d.name == "Dashboards") {
+                return 50;
+            } else if (d.url) {
+                return barHeight;
+            } else {
+                return barHeight
+            }
+        })
+        .attr("width", barWidth)
+        .attr("rx", 0)
+        .style("fill", color)
+        /*.style("stroke", function(d){if (d.name == "Dashboards"){return "#444";}else if (d.url){return "#888";}else{return "#888";}})*/
+        .style("stroke", function(d) {
+            if (d.name == "Dashboards") {
+                return "#444";
+            } else if (d.depth == 1) {
+                return "rgba(160,160,160,1)";
+            } else {
+                return "rgba(0,0,0,0)";
+            }
+        })
+        .style("stroke-dasharray", function(d) {
+            return (233 - (d.depth * inset)) + ",1500"
+        })
+        .on("click", click);
+
+    nodeEnter.append("text")
+        .attr("id", function(d) {
+            if (d.url) {
+                return "dash_string";
+            } else {
+                return "label";
+            }
+        })
+        .attr("dy", function(d) {
+            if (d.Author && d.name) {
+                if (d.name.length > 25) {
+                    return 28;
+                } else {
+                    return 28;
+                }
+            } else if (d.name == "Dashboards") {
+                return 7;
+            } else {
+                return 33;
+            }
+        })
+        .attr("dx", function(d) {
+            if (d.name == "Dashboards") {
+                return 55
+            } else if (d.depth == 1) {
+                return 15
+            } else {
+                return 30
+            }
+        })
+        .text(function(d) {
+            if (d.url) {
+                return "◦ " + d.name;
+            } else {
+                return d.name;
+            }
+        })
+        .style("font-size", text_size)
+        .style("font-weight", function(d) {
+            if (d.depth == 1) {
+                return 900
+            } else {
+                return 100
+            }
+        })
+        .style("fill", text_color);
+
+    nodeEnter.append("text")
+        .attr("id", "symbol")
+        .attr("dy", 34)
+        .attr("dx", 217)
+        .text(symbol)
+        .style("font-size", "14px")
+        .style("font-weight", 500)
+        .style("fill", text_color);
+
+    nodeEnter.append("text")
+        .attr("dy", 27)
+        .attr("dx", 46)
+        .text(function(d) {
+            return d.message;
+        })
+        .style("font-size", "13px")
+        .style("font-weight", 500)
+        .style("fill", "#444");
+
+    nodeEnter.append("text")
+        .attr("dy", function(d) {
+            if (d.Author && d.name) {
+                if (d.name.length + d.Author.length > 42) {
+                    return 40;
+                } else {
+                    return 40;
+                }
+            } else {
+                return 40;
+            }
+        })
+        .attr("dx", function(d) {
+            return 41
+        })
+        .text(function(d) {
+            return d.Author;
+        })
+        .style("font-size", 10)
+        .style("font-weight", 200)
+        .style("text-anchor", "start")
+        .style("fill", "#333")
+        .on("click", function(d) {
+            console.log("document.getElementById('myframe').reload()");
+        });
+
+
+    nodeEnter.append("svg:a")
+        .attr("xlink:href", function(d) {
+            return d.url
+        }) // Dash Links
+        //.attr("target", function(d){if(d.name == "ZD NPS Dashboard"){return "_blank"}else{return "myframe"}})
+        //.attr("target", function(d){ try {console.log("check");return "myframe"} catch(err) {console.log(err); return "_blank"} })
+        .attr("target", function(d) {
+            try {
+                if (d.url.toLowerCase().indexOf("drive.google.com") <= 0 && d.url.toLowerCase().indexOf("sbganalytics.corp.intuit.net/resources") <= 0) {
+                    return "myframe"
+                } else {
+                    return "_blank"
+                }
+            } catch (err) {
+                return "myframe"
+            }
+        })
+        .append("svg:rect")
+        .attr("height", "30px")
+        .attr("width", "150px")
+        .attr("y", 15)
+        .style("fill", function(d) {
+            if (d.url) {
+                return "steelblue"
+            } else {
+                return "white"
+            };
+        })
+        .style("opacity", 0) //Tool Tips
+        .on("mouseover", function(d) {
+            if (d.Description) {
+                div.transition()
+                    .duration(200)
+                    .style("opacity", 1);
+                div.html("<center><br><b>" + d.name + "</b><br><br>" + d.Description + "</center><div id=\"author_div\">" + d.Author + " </div>")
+                    // div.html("<div id=&quot;myElementToStick&quot;>LOGO</div>")
+                    //.style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+            }
+        })
+        .on("mouseout", function(d) {
+            div.transition()
+                .duration(500)
+                .style("opacity", 0);
+        })
+        .on("click", click);
+    //	.on("click", trackOutboundLink(d.url); return false;);
+
+
+    // Transition nodes to their new position.
+    nodeEnter.transition()
+        .duration(duration)
+        .attr("transform", function(d) {
+            return "translate(" + d.y + "," + d.x + ")";
+        })
+        .style("opacity", 1);
+
+    node.transition()
+        .duration(duration)
+        .select("#symbol")
+        .text(symbol);
+
+    node.transition()
+        .duration(duration)
+        .select("#dash_string")
+        .style("color", "green");
+
+    node.transition()
+        .duration(duration)
+        .attr("transform", function(d, m) {
+            if (m == 0) {
+                nq = 0.5;
+                nz = 0.4;
+            }
+            if (d.url) {
+                nq = nq + 1;
+                return "translate(" + d.y + "," + d.x + ")"; //return "translate(250," + ((nq*(barHeight))-25) + ")";
+            } else {
+                nz = nz + 1;
+                return "translate(" + d.y + "," + d.x + ")"; //return "translate(10," + ((nz*(barHeight+3))-40) + ")";
+            }
+        })
+        .style("opacity", 1)
+        .select("rect")
+        .attr("width", width_change)
+        .style("fill", color);
+
+    // Transition exiting nodes to the parent's new position.
+    node.exit().transition()
+        .duration(duration)
+        .attr("transform", function(d) {
+            return "translate(" + source.y + "," + source.x + ")";
+        })
+        .style("opacity", 1)
+        .remove();
+
+    // Update the links…
+    var link = svg.selectAll("path.link")
+        .data(tree.links(nodes), function(d) {
+            return d.target.id;
+        });
+
+    // Enter any new links at the parent's previous position.
+    link.enter().insert("path", "g")
+        .attr("class", "link")
+        .attr("d", function(d) {
+            var o = {
+                x: source.x0,
+                y: source.y0
+            };
+            return diagonal({
+                source: o,
+                target: o
+            });
+        })
+        .transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+    // Transition links to their new position.
+    link.transition()
+        .duration(duration)
+        .attr("d", diagonal);
+
+    // Transition exiting nodes to the parent's new position.
+    link.exit().transition()
+        .duration(duration)
+        .attr("d", function(d) {
+            var o = {
+                x: source.x,
+                y: source.y
+            };
+            return diagonal({
+                source: o,
+                target: o
+            });
+        })
+        .remove();
+
+    // Stash the old positions for transition.
+    nodes.forEach(function(d) {
+        d.x0 = d.x;
+        d.y0 = d.y;
+    });
+}
+
+d3.select(window)
+    .on("resize", function() {
+        var my_width = window.innerWidth - 270;
+        var str_width = my_width.toString() + "px";
+        d3.select("#myframe").transition().duration(400).style("width", str_width);
+    });
+
+// Toggle children on click.
+function click(d) {
+    if (d.children) {
+        d._children = d.children;
+        d.children = null;
+        //This mess controls iFrame expansion
+        if (d.name == "Dashboards" && parseInt(d3.select("#myframe").style("width"), 10) < parseInt(d3.select("body").style("width"), 10) - 100) {
+            var my_width = window.innerWidth - 65;
+            var str_width = my_width.toString() + "px";
+            setTimeout(function() {
+                d3.select("#myframe").transition().duration(400).style("width", str_width);
+                d3.select("#head-div").transition().duration(400).style("top", "-53px");
+                d3.select("svg").transition().duration(400).style("font-weight", 100);
+                d3.select("svg").transition().duration(0).style("height", "50px");
+            }, 300);
+        }
+    } else {
+        if (d.name == "Dashboards" && parseInt(d3.select("#myframe").style("width"), 10) > parseInt(d3.select("body").style("width"), 10) - 100) {
+            var my_width = window.innerWidth - 300;
+            var str_width = my_width.toString() + "px";
+            d3.select("#head-div").transition().duration(400).style("top", "0px");
+            d3.select("#myframe").transition().duration(400).style("width", str_width);
+        }
+
+        if (d.depth == 1) {
+            cat = d.name.split(' ').join('').replace('&', (''))
+        }
+        if (d.depth == 2) {
+            if (d.url) {
+                url = d.url;
+                new_url = '?cat=' + cat + '&url=' + url;
